@@ -1,0 +1,28 @@
+{
+    "conventionalCommits.scopes": [
+        "base setup"
+    ],
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#e07698",
+        "activityBar.background": "#e07698",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#b1e797",
+        "activityBarBadge.foreground": "#15202b",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#e07698",
+        "statusBar.background": "#d64d79",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#e07698",
+        "statusBarItem.remoteBackground": "#d64d79",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#d64d79",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#d64d7999",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#d64d79"
+}
