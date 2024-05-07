@@ -1,17 +1,13 @@
-import axios from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 
-console.log(process.env.BASE_URL);
 const instance = axios.create({
   baseURL: process.env.BASE_URL,
   withCredentials: true,
 });
 
 instance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response.status === 403 || error.response.status === 401) {
-      return Promise.reject(error);
-    }
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
     return Promise.reject(error);
   }
 );

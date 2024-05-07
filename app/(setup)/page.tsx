@@ -1,10 +1,12 @@
 import { initialSetup } from "@/lib/initial-setup";
+import { redirect } from "next/navigation";
 
 const SetupPage = async function () {
-  const profile = await initialSetup();
-  console.log("🚀 ~ file: page.tsx:5 ~ SetupPage ~ profile:", profile);
+  const userDetails: CheckUserResponseType = await initialSetup();
 
-  return <div>setup page</div>;
+  if (userDetails.server) redirect(`/servers/${userDetails.server.id}`);
+
+  return <div>Create Server</div>;
 };
 
 export default SetupPage;
