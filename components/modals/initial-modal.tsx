@@ -1,5 +1,8 @@
 "use client";
 import React from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
   DialogContent,
@@ -8,9 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import FileUpload from "../file-upload";
 
 const formSchema = z.object({
   imageUrl: z
@@ -66,7 +67,21 @@ const InitialModal = (): React.ReactNode => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
-                Todo image upload
+                <FormField
+                  control={form.control}
+                  name={"imageUrl"}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endPoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
               <div>
                 <FormField

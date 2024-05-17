@@ -1,4 +1,6 @@
 import dynamic from "next/dynamic";
+import { initialSetup } from "@/lib/initial-setup";
+import { redirect } from "next/navigation";
 const InitialModal = dynamic(
   () => import("@/components/modals/initial-modal"),
   {
@@ -6,8 +8,6 @@ const InitialModal = dynamic(
     loading: () => <p>Loading...</p>,
   }
 );
-import { initialSetup } from "@/lib/initial-setup";
-import { redirect } from "next/navigation";
 
 const SetupPage = async function () {
   const userDetails: CheckUserResponseType = await initialSetup();
