@@ -16,7 +16,7 @@ const SetupPage = async function () {
 
   return (
     <>
-      <InitialModal />;
+      <InitialModal userId={userDetails.user.id} />;
     </>
   );
 };

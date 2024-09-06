@@ -22,6 +22,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import FileUpload from "../file-upload";
+import axiosInstance from "@/config/axiosConfig";
+import { serverApi } from "@/config/apiConfig";
+import { useRouter } from "next/navigation";
+import { AxiosResponse } from "axios";
 
 const formSchema = z.object({
   imageUrl: z
@@ -37,7 +41,13 @@ const formSchema = z.object({
     .min(3, { message: "Server name have at least 3 characters" }),
 });
 
-const InitialModal = (): React.ReactNode => {
+interface InitialModalProps {
+  userId: string;
+}
+
+const InitialModal = (props: InitialModalProps): React.ReactNode => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +58,20 @@ const InitialModal = (): React.ReactNode => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = function (values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const onSubmit = async function (values: z.infer<typeof formSchema>) {
+    try {
+      console.log("calling create server api ");
+      const response: AxiosResponse = await axiosInstance.post(serverApi, {
+        ...values,
+        userId: props.userId,
+      });
+      console.log(response);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
