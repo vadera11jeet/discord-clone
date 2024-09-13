@@ -15,3 +15,10 @@ type CheckUserResponseType = {
   user: UserProfileType;
   server: ServerType;
 };
+
+type UserGetProfile = {
+  data: CheckUserResponseType | null;
+  isLoading: bool | null;
+  isValidating: bool | null;
+  error: Error | unknown | null;
+};
