@@ -2,7 +2,9 @@ import { auth } from "@clerk/nextjs/server";
 import { checkUserExistApi } from "@/config/apiConfig";
 import axiosInstance from "@/config/axiosConfig";
 
-export async function getProfile() {
+export async function getProfile(): Promise<
+  CheckUserResponseType | null | undefined
+> {
   const { userId } = auth();
 
   if (!userId) {
