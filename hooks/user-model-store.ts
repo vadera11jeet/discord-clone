@@ -5,6 +5,7 @@ export type ModalType = "createServer";
 type ModalStore = {
   type: ModalType | null;
   isOpen: boolean;
+  // eslint-disable-next-line no-unused-vars
   onOpen: (type: ModalType) => void;
   onClose: () => void;
 };
