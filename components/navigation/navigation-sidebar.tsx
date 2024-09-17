@@ -8,18 +8,27 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import NavigationAction from "./navigation-action";
 import NavigationItem from "./navigation-items";
+import { cookies } from "next/headers";
 
 const NavigationSideBar = async () => {
   const profile = await getProfile();
 
   if (!profile) redirect("/");
 
+  const nextCookies = cookies();
+  const token = nextCookies.get("__session");
+
   const {
     data: {
       data: { serverList },
     },
   } = await axiosInstance.get<{ data: ApiResponse<Server[]> }>(
-    `${userServerListApi}/${profile?.user?.id}`
+    `${userServerListApi}/${profile?.user?.id}`,
+    {
+      headers: {
+        Cookie: `__session=${token!.value};`,
+      },
+    }
   );
 
   return (

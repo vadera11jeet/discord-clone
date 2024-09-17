@@ -38,3 +38,32 @@ type ApiResponse<T> = {
   totalCount: number;
   hasMore: boolean;
 };
+
+type Channel = {
+  id: string;
+  name: string;
+  type: "AUDIO" | "VIDEO" | "TEXT";
+  profileId: string;
+  serverId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  profile: UserProfileType;
+  server: Server;
+};
+
+type Member = {
+  id: string;
+  role: "ADMIN" | "MODERATOR" | "GUEST";
+  profileId: string;
+  profile: UserProfileType;
+  serverId: string;
+  server: Server;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type ServerInfo = Server & {
+  profile: UserProfileType;
+  channels: Channel[];
+  members: Members[];
+};
