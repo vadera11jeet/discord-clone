@@ -14,10 +14,6 @@ type ServerSidebarProps = {
 
 const ServerSidebar = async ({ serverInfo }: ServerSidebarProps) => {
   const profile = await getProfile();
-  console.log(
-    "🚀 ~ file: server-sidebar.tsx:17 ~ ServerSidebar ~ profile:",
-    profile
-  );
 
   if (!profile) redirect("/");
 
