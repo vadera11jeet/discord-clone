@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/providers/theme-providers";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import "./globals.css";
+import ModalProvider from "@/components/providers/modal-provider";
 const font = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,9 +25,10 @@ export default function RootLayout({
             attribute="class"
             enableSystem={false}
             defaultTheme="dark"
-            forcedTheme="dark"
+            // forcedTheme="dark"
             storageKey="discord-theme"
           >
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>
