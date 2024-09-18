@@ -1,6 +1,4 @@
 "use client";
-import React, { useState } from "react";
-import { Check, Copy, RefreshCw } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { useOrigin } from "@/hooks/use-origin";
 import { useModal } from "@/hooks/user-model-store";
+import { Check, Copy } from "lucide-react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -17,7 +17,6 @@ const InviteModal = (): React.ReactNode => {
   const { isOpen, onClose, type, data } = useModal();
   const origin = useOrigin();
 
-  //   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const { server } = data;
@@ -26,6 +25,7 @@ const InviteModal = (): React.ReactNode => {
   const onCopyHandler = () => {
     navigator.clipboard.writeText(inviteUrl);
     setCopied(true);
+
     const timerId = setTimeout(() => {
       setCopied(false);
       clearTimeout(timerId);
@@ -58,13 +58,6 @@ const InviteModal = (): React.ReactNode => {
               )}
             </Button>
           </div>
-          <Button
-            variant="link"
-            className="mt-4 text-xs text-zinc-500"
-            size="sm"
-          >
-            Generate a new link <RefreshCw className="ml-2 h-4 w-4" />
-          </Button>
         </div>
       </DialogContent>
     </Dialog>
