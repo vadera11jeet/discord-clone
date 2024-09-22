@@ -23,7 +23,7 @@ const NavigationSideBar = async () => {
       data: { serverList },
     },
   } = await axiosInstance.get<{ data: ApiResponse<Server[]> }>(
-    `${userServerListApi}/${profile?.user?.id}`,
+    `${userServerListApi}`,
     {
       headers: {
         Cookie: `__session=${token!.value};`,

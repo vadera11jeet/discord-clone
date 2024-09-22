@@ -1,4 +1,11 @@
-import NavigationSideBar from "@/components/navigation/navigation-sidebar";
+import dynamic from "next/dynamic";
+const NavigationSideBar = dynamic(
+  () => import("@/components/navigation/navigation-sidebar"),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>,
+  }
+);
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   return (

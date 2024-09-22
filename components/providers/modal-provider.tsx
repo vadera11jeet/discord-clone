@@ -3,6 +3,8 @@
 import CreateServerModal from "@/components/modals/create-server-modal";
 import { useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import InviteModal from "../modals/invite-modal";
+import EditServerModal from "../modals/edit-server-modal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -17,6 +19,8 @@ const ModalProvider = () => {
   return (
     <>
       <CreateServerModal userId={user.userId} />
+      <InviteModal />
+      <EditServerModal />
     </>
   );
 };

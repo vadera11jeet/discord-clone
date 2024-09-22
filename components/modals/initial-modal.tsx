@@ -25,7 +25,6 @@ import FileUpload from "../file-upload";
 import axiosInstance from "@/config/axiosConfig";
 import { serverApi } from "@/config/apiConfig";
 import { useRouter } from "next/navigation";
-import { AxiosResponse } from "axios";
 
 const formSchema = z.object({
   imageUrl: z
@@ -60,12 +59,10 @@ const InitialModal = (props: InitialModalProps): React.ReactNode => {
 
   const onSubmit = async function (values: z.infer<typeof formSchema>) {
     try {
-      console.log("calling create server api ");
-      const response: AxiosResponse = await axiosInstance.post(serverApi, {
+      await axiosInstance.post(serverApi, {
         ...values,
         userId: props.userId,
       });
-      console.log(response);
       form.reset();
       router.refresh();
       window.location.reload();

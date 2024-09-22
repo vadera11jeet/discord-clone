@@ -23,15 +23,13 @@ const ServerIdLayout = async ({
   const {
     data: { data: serverInfo },
   } = await axiosInstance.get<ApiResponse<ServerInfo>>(
-    `${serverApi}/${params.serverId}/${profile.user.id}`,
+    `${serverApi}/${params.serverId}`,
     {
       headers: {
         Cookie: `__session=${token!.value};`,
       },
     }
   );
-
-  console.log("🚀 ~ file: layout.tsx:25 ~ serverInfo:", serverInfo);
 
   if (!serverInfo) {
     return redirect("/");
