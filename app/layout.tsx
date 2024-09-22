@@ -25,7 +25,6 @@ export default function RootLayout({
             attribute="class"
             enableSystem={false}
             defaultTheme="dark"
-            forcedTheme="dark"
             storageKey="discord-theme"
           >
             <ModalProvider />

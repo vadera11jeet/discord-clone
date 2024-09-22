@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -24,7 +25,6 @@ import { Input } from "@/components/ui/input";
 import FileUpload from "../file-upload";
 import axiosInstance from "@/config/axiosConfig";
 import { serverApi } from "@/config/apiConfig";
-import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/user-model-store";
 
 const formSchema = z.object({
@@ -41,12 +41,9 @@ const formSchema = z.object({
     .min(3, { message: "Server name have at least 3 characters" }),
 });
 
-interface InitialModalProps {
-  userId: string;
-}
-
-const CreateServerModal = (props: InitialModalProps): React.ReactNode => {
-  const { isOpen, onClose, type } = useModal();
+const EditServerModal = (): React.ReactNode => {
+  const { isOpen, onClose, type, data } = useModal();
+  const { server } = data;
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,6 +54,13 @@ const CreateServerModal = (props: InitialModalProps): React.ReactNode => {
     },
   });
 
+  useEffect(() => {
+    if (server) {
+      form.setValue("serverName", server.name);
+      form.setValue("imageUrl", server.imageUrl);
+    }
+  }, [server, form]);
+
   const handelClose = () => {
     form.reset();
     onClose();
@@ -66,9 +70,8 @@ const CreateServerModal = (props: InitialModalProps): React.ReactNode => {
 
   const onSubmit = async function (values: z.infer<typeof formSchema>) {
     try {
-      await axiosInstance.post(serverApi, {
+      await axiosInstance.patch(`${serverApi}/${server?.id}`, {
         ...values,
-        userId: props.userId,
       });
       form.reset();
       router.refresh();
@@ -79,7 +82,7 @@ const CreateServerModal = (props: InitialModalProps): React.ReactNode => {
   };
 
   return (
-    <Dialog open={isOpen && type === "createServer"} onOpenChange={handelClose}>
+    <Dialog open={isOpen && type === "editServer"} onOpenChange={handelClose}>
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-bold text-center text-2xl">
@@ -134,7 +137,7 @@ const CreateServerModal = (props: InitialModalProps): React.ReactNode => {
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant={"primary"} disabled={isLoading}>
-                Create
+                Save
               </Button>
             </DialogFooter>
           </form>
@@ -144,4 +147,4 @@ const CreateServerModal = (props: InitialModalProps): React.ReactNode => {
   );
 };
 
-export default CreateServerModal;
+export default EditServerModal;

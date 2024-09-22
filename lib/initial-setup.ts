@@ -25,7 +25,6 @@ export const initialSetup = async function (): Promise<CheckUserResponseType> {
   };
 
   const createdUser = await axiosInstance.post(createUserApi, newUserDetails);
-  console.log("🚀 ~ initialSetup ~ createdUser:", createdUser);
 
   return createdUser.data.data;
 };

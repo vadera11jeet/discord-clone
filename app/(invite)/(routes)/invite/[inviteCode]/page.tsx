@@ -24,7 +24,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   const {
     data: { data: isServerExisted },
   } = await axiosInstance.get<ApiResponse<Server | null>>(
-    `${serverDetailsByInviteCode}/${params.inviteCode}/${profile.user.id}`,
+    `${serverDetailsByInviteCode}/${params.inviteCode}`,
     {
       headers: {
         Cookie: `__session=${token!.value};`,
@@ -32,12 +32,12 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     }
   );
 
-  if (isServerExisted) redirect(`servers/${isServerExisted.id}`);
+  if (isServerExisted) redirect(`/servers/${isServerExisted.id}`);
 
   const {
     data: { data: newSever },
   } = await axiosInstance.patch<ApiResponse<Server>>(
-    `${serverDetailsByInviteCode}/${params.inviteCode}/${profile.user.id}`,
+    `${serverDetailsByInviteCode}/${params.inviteCode}`,
     {
       data: {
         profileId: profile.user.id,
@@ -51,7 +51,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     }
   );
 
-  if (newSever) redirect(`servers/${newSever.id}`);
+  if (newSever) redirect(`/servers/${newSever.id}`);
 
   return null;
 };
