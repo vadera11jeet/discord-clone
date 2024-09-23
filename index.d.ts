@@ -3,6 +3,7 @@ type UserProfileType = {
   userId: string;
   name: string;
   email: string;
+  imageUrl: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -65,5 +66,5 @@ type Member = {
 type ServerInfo = Server & {
   profile: UserProfileType;
   channels: Channel[];
-  members: Members[];
+  members: Member[];
 };
