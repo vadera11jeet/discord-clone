@@ -33,6 +33,7 @@ import {
   DropdownMenuSubTrigger,
 } from "../ui/dropdown-menu";
 import { membersApi } from "@/config/apiConfig";
+import { useRouter } from "next/navigation";
 
 const roleIconMap = {
   GUEST: null,
@@ -41,35 +42,47 @@ const roleIconMap = {
 };
 
 const MembersModal = (): React.ReactNode => {
-  const { isOpen, onClose, type, data } = useModal();
-  // eslint-disable-next-line
+  const router = useRouter();
+  const { isOpen, onClose, type, data, onOpen } = useModal();
+
   const [loadingId, setLoadingId] = useState<string>("");
 
   const { server } = data;
 
-  // eslint-disable-next-line
   const onRoleChange = async function (
     memberId: string,
     memberRole: "ADMIN" | "MODERATOR" | "GUEST"
   ) {
     try {
+      setLoadingId(memberId);
       const response = await axiosInstance.patch(
-        `${membersApi}/${memberId}`,
+        `${membersApi}/${memberId}/${server?.id}`,
         {
           role: memberRole,
-        },
-        {
-          params: {
-            serverId: server?.id,
-          },
         }
       );
-      console.log(
-        "🚀 ~ file: members-modal.tsx:57 ~ MembersModal ~ response:",
-        response
-      );
+      router.refresh();
+      onOpen("members", { server: response.data.data });
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoadingId("");
+    }
+  };
+
+  const onKick = async function (memberId: string) {
+    try {
+      setLoadingId(memberId);
+      const response = await axiosInstance.delete(
+        `${membersApi}/${memberId}/${server?.id}`
+      );
+
+      router.refresh();
+      onOpen("members", { server: response.data.data });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoadingId("");
     }
   };
 
@@ -81,12 +94,12 @@ const MembersModal = (): React.ReactNode => {
             Manage Members
           </DialogTitle>
           <DialogDescription className="mx-auto my-0 text-zinc-500">
-            {server?.members.length}{" "}
+            {server?.members?.length}{" "}
             {`Member${server?.members && server?.members.length > 1 ? "s" : ""}`}
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="mt-8  max-h-[420px] pr-6">
-          {server?.members.map((member) => (
+          {server?.members?.map((member) => (
             <div key={member.id} className="mb-6 flex items-center gap-x-2">
               <UserAvatar src={member.profile.imageUrl} />
               <div className="flex flex-col gap-y-1">
@@ -97,7 +110,7 @@ const MembersModal = (): React.ReactNode => {
               </div>
               {server.profileId !== member.profileId &&
                 loadingId !== member.id && (
-                  <div className="ml-auto">
+                  <div className="ml-auto mr-3">
                     <DropdownMenu>
                       <DropdownMenuTrigger>
                         <MoreVertical className="h-4 w-4 text-zinc-500" />
@@ -110,14 +123,20 @@ const MembersModal = (): React.ReactNode => {
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => onRoleChange(member.id, "GUEST")}
+                              >
                                 <Shield className="mr-2 h-4 w-4" />
                                 Guest{" "}
                                 {member.role === "GUEST" && (
                                   <Check className="ml-auto h-4 w-4" />
                                 )}
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  onRoleChange(member.id, "MODERATOR")
+                                }
+                              >
                                 <ShieldCheck className="mr-2 h-4 w-4" />
                                 Moderator{" "}
                                 {member.role === "MODERATOR" && (
@@ -128,7 +147,7 @@ const MembersModal = (): React.ReactNode => {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onKick(member.id)}>
                           <Gavel className="mr-2 h-4 w-4" />
                           Kick
                         </DropdownMenuItem>
@@ -137,7 +156,7 @@ const MembersModal = (): React.ReactNode => {
                   </div>
                 )}
               {loadingId === member.id && (
-                <Loader2 className="ml-auto h-4 w-4 animate-spin text-zinc-500" />
+                <Loader2 className="ml-auto h-4   w-4 animate-spin text-zinc-500" />
               )}
             </div>
           ))}
