@@ -54,14 +54,9 @@ const MembersModal = (): React.ReactNode => {
   ) {
     try {
       const response = await axiosInstance.patch(
-        `${membersApi}/${memberId}`,
+        `${membersApi}/${memberId}/${server?.id}`,
         {
           role: memberRole,
-        },
-        {
-          params: {
-            serverId: server?.id,
-          },
         }
       );
       console.log(
